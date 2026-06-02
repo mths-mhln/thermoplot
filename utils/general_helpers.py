@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from utils.configparser import Config
-from utils.fluid_properties.coolprop_interface import CoolPropAbstractState_v2
+from utils.coolprop_interface import CoolPropAbstractState
 
 
 
 
 
-def extract_critical_point(config: type[Config], AS: type[CoolPropAbstractState_v2]) -> np.ndarray:
+def extract_critical_point(config: type[Config], AS: type[CoolPropAbstractState]) -> np.ndarray:
     """extract correct critical point coordinates according to diagram type. """
     # Only T_crit, P_crit and rho_crit can be used for extracting critical point coordinates. 
     # use rho_crit as second variable for extracting S and H information. 

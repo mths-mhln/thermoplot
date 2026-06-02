@@ -5,7 +5,7 @@ import copy
 
 from utils.configparser import Config
 from utils.general_helpers import extract_critical_point
-from utils.fluid_properties.coolprop_interface import CoolPropAbstractState_v2
+from utils.coolprop_interface import CoolPropAbstractState
 
 import numpy as np
 
@@ -16,7 +16,7 @@ import numpy as np
 ###########################################
 # Isoline generation - General
 ###########################################
-def construct_saturation_dome(config: type[Config], AS: type[CoolPropAbstractState_v2]) -> np.ndarray:
+def construct_saturation_dome(config: type[Config], AS: type[CoolPropAbstractState]) -> np.ndarray:
     # independent variable is the vertical axis variable in the diagram. This is necessary to obtain determinate thdy pairs. 
     iv_type = config.thermoplot_settings["diagram_type"][0]
     dv_type = config.thermoplot_settings["diagram_type"][-1]
@@ -45,7 +45,7 @@ def construct_saturation_dome(config: type[Config], AS: type[CoolPropAbstractSta
 
 
 
-def construct_quality_isolines(config: type[Config], AS: type[CoolPropAbstractState_v2], n_iq_lines: float) -> np.ndarray:
+def construct_quality_isolines(config: type[Config], AS: type[CoolPropAbstractState], n_iq_lines: float) -> np.ndarray:
     # independent variable is the vertical axis variable in the diagram. This is necessary to obtain determinate thdy pairs. 
     iv_type = config.thermoplot_settings["diagram_type"][0]
     dv_type = config.thermoplot_settings["diagram_type"][-1]
@@ -80,7 +80,7 @@ def construct_quality_isolines(config: type[Config], AS: type[CoolPropAbstractSt
 
 
 
-def construct_critical_isoline(config: type[Config], AS: type[CoolPropAbstractState_v2], n_pts: int) -> np.ndarray:
+def construct_critical_isoline(config: type[Config], AS: type[CoolPropAbstractState], n_pts: int) -> np.ndarray:
     # independent variable is the horizontal axis variable in the diagram. this is necessary as critical isoline reaches 0 slope
     iv_type = config.thermoplot_settings["diagram_type"][-1]
     dv_type = config.thermoplot_settings["diagram_type"][0]

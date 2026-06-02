@@ -10,7 +10,7 @@ from src.isolines import (isobar_lines_ts, isenthalp_lines_ts, isotherm_lines_ph
 
 from utils.configparser import Config
 from utils.general_helpers import configure_matplotlib, extract_critical_point
-from utils.fluid_properties.fluid_properties import AbstractState_v2
+from utils.coolprop_interface import CoolPropAbstractState
 ### Note: in this code I retaliate against the standard use of extracting fluid properties using FP since I think it is silly...
 
 
@@ -40,7 +40,7 @@ def thermoplot(config: type[Config]):
     ax.set_ylim(dv_lo, dv_hi)
 
     # instantiate fluid object
-    AS = AbstractState_v2("REFPROP", config.thermoplot_settings["fluid_name"])
+    AS = CoolPropAbstractState("REFPROP", config.thermoplot_settings["fluid_name"])
 
     # extract critical point, and plot as yellow circle with black edge.
     crit_coords = extract_critical_point(config, AS)
