@@ -1,4 +1,10 @@
+###########################################
+# Imports
+###########################################
 import logging
+
+
+
 
 class ColoredFormatter(logging.Formatter):
     COLORS = {
@@ -19,6 +25,7 @@ class ColoredFormatter(logging.Formatter):
             fmt = "%(levelname)-8s %(message)s"
         log_message = logging.Formatter(fmt).format(record)
         return f"{log_color}{log_message}{self.RESET}"
+
 
 
 def setup_logger():
