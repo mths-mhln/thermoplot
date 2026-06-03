@@ -15,10 +15,21 @@ from coolprop_interface_thermoplot import CoolPropAbstractState
 
 
 
-def thermoplot(thermoplot_config_file_path: str) -> type[plt.Figure]:
+def thermoplot(thermoplot_config_file_path: str, cycle_bounds: dict[str, list] = None) -> type[plt.Figure]:
     # load configuration 
     config = ConfigThermoplot(config_file=thermoplot_config_file_path)
     config.get_thermoplot_settings()
+
+    # if cycle bounds are provided, overwrite the default plot limits. 
+    if cycle_bounds is not None:
+        # Extract override ranges
+        iv_range = [min(cycle_bounds[f"{config.diagram_type[-1]}_range"]), max(cycle_bounds[f"{config.diagram_type[-1]}_range"])]
+        dv_range = [min(cycle_bounds[f"{config.diagram_type[0]}_range"]), max(cycle_bounds[f"{config.diagram_type[0]}_range"])]
+        try:
+            config.thermoplot_settings[f"{config.diagram_type[-1]}_range"] = iv_range
+            config.thermoplot_settings[f"{config.diagram_type[0]}_range"] = dv_range
+        except KeyError:
+            print("Attempting to adapt thermoplot ranges of incorrect thermoplot type. Adapt thermoplot input file.")
 
     # Create figure and axis objects
     configure_matplotlib()
@@ -109,6 +120,7 @@ def thermoplot(thermoplot_config_file_path: str) -> type[plt.Figure]:
         ax.xaxis.set_major_formatter(
             ticker.FuncFormatter(lambda x, _: f"${x/1000:.0f}$"))
     fig.tight_layout()
+
     return fig
 
  
