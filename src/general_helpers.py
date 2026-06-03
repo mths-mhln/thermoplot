@@ -42,4 +42,6 @@ def configure_matplotlib():
             r"\sisetup{group-separator={\,},group-minimum-digits=4}"
         ),
     })
+    plt.rcParams['path.simplify'] = True
+    plt.rcParams['path.simplify_threshold'] = 0.1
     return None
