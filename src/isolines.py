@@ -3,9 +3,9 @@
 ###########################################
 import copy
 
-from utils.configparser import Config
-from utils.general_helpers import extract_critical_point
-from utils.coolprop_interface import CoolPropAbstractState
+from configthermoplot import ConfigThermoplot
+from general_helpers import extract_critical_point
+from coolprop_interface import CoolPropAbstractState
 
 import numpy as np
 
@@ -16,7 +16,7 @@ import numpy as np
 ###########################################
 # Isoline generation - General
 ###########################################
-def construct_saturation_dome(config: type[Config], AS: type[CoolPropAbstractState]) -> np.ndarray:
+def construct_saturation_dome(config: type[ConfigThermoplot], AS: type[CoolPropAbstractState]) -> np.ndarray:
     # independent variable is the vertical axis variable in the diagram. This is necessary to obtain determinate thdy pairs. 
     iv_type = config.thermoplot_settings["diagram_type"][0]
     dv_type = config.thermoplot_settings["diagram_type"][-1]
@@ -45,7 +45,7 @@ def construct_saturation_dome(config: type[Config], AS: type[CoolPropAbstractSta
 
 
 
-def construct_quality_isolines(config: type[Config], AS: type[CoolPropAbstractState], n_iq_lines: float) -> np.ndarray:
+def construct_quality_isolines(config: type[ConfigThermoplot], AS: type[CoolPropAbstractState], n_iq_lines: float) -> np.ndarray:
     # independent variable is the vertical axis variable in the diagram. This is necessary to obtain determinate thdy pairs. 
     iv_type = config.thermoplot_settings["diagram_type"][0]
     dv_type = config.thermoplot_settings["diagram_type"][-1]
@@ -80,7 +80,7 @@ def construct_quality_isolines(config: type[Config], AS: type[CoolPropAbstractSt
 
 
 
-def construct_critical_isoline(config: type[Config], AS: type[CoolPropAbstractState], n_pts: int) -> np.ndarray:
+def construct_critical_isoline(config: type[ConfigThermoplot], AS: type[CoolPropAbstractState], n_pts: int) -> np.ndarray:
     # independent variable is the horizontal axis variable in the diagram. this is necessary as critical isoline reaches 0 slope
     iv_type = config.thermoplot_settings["diagram_type"][-1]
     dv_type = config.thermoplot_settings["diagram_type"][0]
@@ -123,7 +123,7 @@ def construct_critical_isoline(config: type[Config], AS: type[CoolPropAbstractSt
 ###########################################
 # Isoline generation - TS
 ###########################################
-def isobar_lines_ts(config, AS, n_lines=12):
+def isobar_lines_ts(config: type[ConfigThermoplot], AS: type[CoolPropAbstractState], n_lines=12):
     # extract plot limits
     T_lo, T_hi = config.thermoplot_settings["T_range"]
     s_lo, s_hi = config.thermoplot_settings["S_range"]
@@ -170,7 +170,7 @@ def isobar_lines_ts(config, AS, n_lines=12):
     return isobar_lines_data_ts
 
 
-def isenthalp_lines_ts(config, AS, n_lines=18):
+def isenthalp_lines_ts(config: type[ConfigThermoplot], AS: type[CoolPropAbstractState], n_lines=18):
     # extract plot limits
     T_lo, T_hi = config.thermoplot_settings["T_range"]
     s_lo, s_hi = config.thermoplot_settings["S_range"]
@@ -212,7 +212,7 @@ def isenthalp_lines_ts(config, AS, n_lines=18):
 ###########################################
 # Isoline generation - PH
 ###########################################
-def isotherm_lines_ph(config, AS, n_lines=18):
+def isotherm_lines_ph(config: type[ConfigThermoplot], AS: type[CoolPropAbstractState], n_lines=18):
     # extract plot limits
     p_lo, p_hi = config.thermoplot_settings["P_range"]
     h_lo, h_hi = config.thermoplot_settings["H_range"]
@@ -259,7 +259,7 @@ def isotherm_lines_ph(config, AS, n_lines=18):
     return isotherm_lines_data_ph
 
 
-def isentrop_lines_ph(config, AS, n_lines=12):
+def isentrop_lines_ph(config: type[ConfigThermoplot], AS: type[CoolPropAbstractState], n_lines=12):
     # extract plot limits
     p_lo, p_hi = config.thermoplot_settings["P_range"]
     h_lo, h_hi = config.thermoplot_settings["H_range"]

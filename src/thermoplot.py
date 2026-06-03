@@ -4,20 +4,22 @@
 from matplotlib import ticker
 import matplotlib.pyplot as plt
 
-from src.labelling import draw_isolines_labeled
-from src.isolines import (isobar_lines_ts, isenthalp_lines_ts, isotherm_lines_ph, isentrop_lines_ph, construct_quality_isolines,
+from labelling import draw_isolines_labeled
+from isolines import (isobar_lines_ts, isenthalp_lines_ts, isotherm_lines_ph, isentrop_lines_ph, construct_quality_isolines,
     construct_saturation_dome, construct_critical_isoline)
 
-from utils.configparser import Config
-from utils.general_helpers import configure_matplotlib, extract_critical_point
-from utils.coolprop_interface import CoolPropAbstractState
+from configthermoplot import ConfigThermoplot
+from general_helpers import configure_matplotlib, extract_critical_point
+from coolprop_interface import CoolPropAbstractState
 ### Note: in this code I retaliate against the standard use of extracting fluid properties using FP since I think it is silly...
 
 
 
+def thermoplot(thermoplot_config_file_path: str) -> type[plt.Figure]:
+    # load configuration 
+    config = ConfigThermoplot(config_file=thermoplot_config_file_path)
+    config.get_thermoplot_settings()
 
-
-def thermoplot(config: type[Config]):
     # Create figure and axis objects
     configure_matplotlib()
     fig, ax = plt.subplots(figsize=(10, 7))
@@ -107,8 +109,6 @@ def thermoplot(config: type[Config]):
         ax.xaxis.set_major_formatter(
             ticker.FuncFormatter(lambda x, _: f"${x/1000:.0f}$"))
     fig.tight_layout()
-
     return fig
-
 
  
