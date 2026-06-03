@@ -5,7 +5,7 @@ import copy
 
 from configthermoplot import ConfigThermoplot
 from general_helpers import extract_critical_point
-from coolprop_interface import CoolPropAbstractState
+from coolprop_interface_thermoplot import CoolPropAbstractState
 
 import numpy as np
 

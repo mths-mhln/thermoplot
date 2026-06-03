@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from configthermoplot import ConfigThermoplot
-from coolprop_interface import CoolPropAbstractState
+from coolprop_interface_thermoplot import CoolPropAbstractState
 
 
 

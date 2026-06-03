@@ -10,7 +10,7 @@ from isolines import (isobar_lines_ts, isenthalp_lines_ts, isotherm_lines_ph, is
 
 from configthermoplot import ConfigThermoplot
 from general_helpers import configure_matplotlib, extract_critical_point
-from coolprop_interface import CoolPropAbstractState
+from coolprop_interface_thermoplot import CoolPropAbstractState
 ### Note: in this code I retaliate against the standard use of extracting fluid properties using FP since I think it is silly...
 
 
