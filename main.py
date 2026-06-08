@@ -1,3 +1,8 @@
+import os
+import sys
+cwd = os.getcwd()
+sys.path.append(f'{cwd}/src/')
+
 import matplotlib.pyplot as plt
 from src.thermoplot import thermoplot
 
