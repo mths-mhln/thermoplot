@@ -23,6 +23,9 @@ from isolines import (isobar_lines_ts, isenthalp_lines_ts, isotherm_lines_ph,
 _THERMOPLOT_CACHE_DIR = Path(tempfile.gettempdir()) / "pyshockflow_thermoplot_cache"
 
 def _thermoplot_cache_path(thermoplot_config_file_path: str, thermoplot_overwrite_settings: dict[str, object] | None) -> Path:
+    """
+    Creates a unique cache path for a given combination of thermoplot config file and thermoplot settings to overwrite. 
+    """
     if thermoplot_overwrite_settings is None:
         overwrite_settings_key = None
     else:
@@ -40,20 +43,23 @@ def _thermoplot_cache_path(thermoplot_config_file_path: str, thermoplot_overwrit
 
 
 @configure_matplotlib
-def thermoplot(thermoplot_config_file_path: str, thermoplot_overwrite_settings: dict[str, list] = None) -> type[plt.Figure]:
+def thermoplot_cached(thermoplot_config_file_path: str, thermoplot_overwrite_settings: dict[str, list] = None) -> type[plt.Figure]:
+    """
+    Disk-cached version of the thermoplot function.
+    """
     cache_path = _thermoplot_cache_path(thermoplot_config_file_path, thermoplot_overwrite_settings)
     if cache_path.exists():
         with cache_path.open("rb") as cache_file:
             return pickle.load(cache_file)
 
-    fig = _thermoplot_cached(thermoplot_config_file_path, thermoplot_overwrite_settings)
+    fig = thermoplot(thermoplot_config_file_path, thermoplot_overwrite_settings)
     _THERMOPLOT_CACHE_DIR.mkdir(parents=True, exist_ok=True)
     with cache_path.open("wb") as cache_file:
         pickle.dump(fig, cache_file, protocol=pickle.HIGHEST_PROTOCOL)
     return fig
 
 
-def _thermoplot_cached(thermoplot_config_file_path: str, thermoplot_overwrite_settings: dict[str, list] = None) -> type[plt.Figure]:
+def thermoplot(thermoplot_config_file_path: str, thermoplot_overwrite_settings: dict[str, list] = None) -> type[plt.Figure]:
     """
     Integral functionality of the package. Combines functionality by all submodules to produce a thermodynamic diagram figure according
     to user specifications in the config file, and returns the figure object to the user suc that they can further adapt it if they wish.
