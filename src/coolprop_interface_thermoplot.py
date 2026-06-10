@@ -3,18 +3,6 @@ from CoolProp import AbstractState
 import CoolProp.CoolProp as CP
 
 
-
-# Utilities
-def _update_wrapper(AS, input_spec, x, y):
-        """
-        Coolprop utility to allow nan return upon vectorized evaluation of AbstractState.
-        """
-        try:
-            AS.update(input_spec, x, y)
-            return False
-        except ValueError:
-            return True
-
 class CoolPropAbstractState():
     """
     CoolProp AbstractState wrapper. allows user to use the familiar PropsSI syntax for CoolProp property extraction, while using the AbstractState under the hood for better performance. 
@@ -45,6 +33,17 @@ class CoolPropAbstractState():
         self.Name = name
         self.Library = library
         self._abstract_state = None
+
+    @staticmethod
+    def _update_wrapper(AS, input_spec, x, y):
+        """
+        Coolprop utility to allow nan return upon vectorized evaluation of AbstractState.
+        """
+        try:
+            AS.update(input_spec, x, y)
+            return False
+        except ValueError:
+            return True
 
     def _get_abstract_state(self):
         """
@@ -93,8 +92,9 @@ class CoolPropAbstractState():
             reorder = True
             return getattr(CP, y_str + x_str + "_INPUTS"), reorder
         
-    @np.vectorize(otypes=[float]) # update abstract state can only happen with single thermodynamic point, arrays are not supported.
-    def _update_and_get(AS, input_spec, x, y, output, reorder): # need no arg self since the vectorize decorator adds this automatically
+    @staticmethod # necessary to allow for vectorization of the method
+    @np.vectorize(otypes=[float])
+    def _update_and_get(AS, input_spec, x, y, output, reorder):
         """
         Vectorized method to update the AbstractState with the specified input specification and input variables, and return the specified output variable. 
         The method returns nan for points that are not valid for the AbstractState (e.g. points outside the phase envelope).
@@ -121,9 +121,9 @@ class CoolPropAbstractState():
             For points that are not valid for the AbstractState (e.g. points outside the phase envelope), nan will be returned.
         """
         if reorder:
-            skip_update = _update_wrapper(AS, input_spec, y, x)
+            skip_update = CoolPropAbstractState._update_wrapper(AS, input_spec, y, x)
         else:
-            skip_update = _update_wrapper(AS, input_spec, x, y)
+            skip_update = CoolPropAbstractState._update_wrapper(AS, input_spec, x, y)
         if skip_update:
             return np.nan
         if output == 'drhomassdPcT':
