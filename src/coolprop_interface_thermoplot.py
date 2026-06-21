@@ -33,6 +33,8 @@ class CoolPropAbstractState():
         self.Name = name
         self.Library = library
         self._abstract_state = None
+        global outputList
+        outputList = []
 
     @staticmethod
     def _update_wrapper(AS, input_spec, x, y):
@@ -42,7 +44,8 @@ class CoolPropAbstractState():
         try:
             AS.update(input_spec, x, y)
             return False
-        except ValueError:
+        except Exception as e:
+            print("Failed to update abstractstate. CoolProp output:", e)
             return True
 
     def _get_abstract_state(self):
@@ -154,7 +157,18 @@ class CoolPropAbstractState():
             Value of the desired output variable, e.g. temperature or pressure. Will be a float for single point evaluation, or a numpy array for vectorized evaluation. 
             For points that are not valid for the AbstractState (e.g. points outside the phase envelope), nan will be returned.       
         """
-        AS = self._get_abstract_state()
+        if prop not in outputList:
+            outputList.append(prop)
+            print("outputList: ", outputList)
+        str_len = int(len(self.Name))
+        if str_len > 3:
+            if self.Name[str_len - 3: str_len] == '[1]':
+                name = self.Name[0:str_len - 3]
+            else:
+                name = self.Name
+        else:
+            name = self.Name
+        AS = AbstractState(self.Library, name)
         if prop in ['Tcrit', 'Pcrit', 'Dcrit', 'Tmax', 'M', 'Ttriple']: # translation necessary to comply with AS syntax, see: https://coolprop.org/_static/doxygen/html/class_cool_prop_1_1_abstract_state.html
             if prop== 'Tcrit':
                 return AS.T_critical()
@@ -174,16 +188,9 @@ class CoolPropAbstractState():
         input_spec, reorder = self._get_input_spec(x_str_AS, y_str_AS)
         if prop_AS == 'Q':
             out = self._update_and_get(AS, input_spec, x, y, prop_AS, reorder)
-            if out == -1:
-                phase = self._update_and_get(AS, input_spec, x, y, 'phase', reorder)
-                # when not in VLE zone, coolprop gives -1 as result. Here we make uniform result with Fluidprop
-                if phase == 0 or phase == 3:  # corresponds to liquid or liquid above critical pressure
-                    return 0
-                elif phase == 5 or phase == 1 or phase == 2 or phase == 4:
-                    # corresponds to gas, superheated gas, supercritical fluid or critical point
-                    return 1
-            else:
-                return out
+            out[out < 0] = 0
+            out[out > 1] = 1
+            return out
         else:
             translator = {
                 "Umass": "umass",
