@@ -33,8 +33,6 @@ class CoolPropAbstractState():
         self.Name = name
         self.Library = library
         self._abstract_state = None
-        global outputList
-        outputList = []
 
     @staticmethod
     def _update_wrapper(AS, input_spec, x, y):
@@ -157,9 +155,6 @@ class CoolPropAbstractState():
             Value of the desired output variable, e.g. temperature or pressure. Will be a float for single point evaluation, or a numpy array for vectorized evaluation. 
             For points that are not valid for the AbstractState (e.g. points outside the phase envelope), nan will be returned.       
         """
-        if prop not in outputList:
-            outputList.append(prop)
-            print("outputList: ", outputList)
         str_len = int(len(self.Name))
         if str_len > 3:
             if self.Name[str_len - 3: str_len] == '[1]':
