@@ -14,28 +14,26 @@ from configthermoplot import ConfigThermoplot
 ###########################################
 # utils
 ###########################################
-def configure_matplotlib(func):
+def configure_matplotlib():
     """
-    Simple decorator function to configure matplotlib with the desired settings for the thermoplot. 
+    Simple function to configure matplotlib with the desired settings for the thermoplot. 
     """
-    def wrapper(*args, **kwargs):
-        # give matplotlib a LaTeX formatting
-        plt.rcParams.update({
-            "text.usetex": True,
-            "font.family": "serif",
-            "font.serif": ["Utopia"],
-            "text.latex.preamble": (
-                r"\usepackage[T1]{fontenc}"
-                r"\usepackage{lmodern}"
-                r"\usepackage{siunitx}"
-                r"\usepackage{bm}"
-                r"\sisetup{group-separator={\,},group-minimum-digits=4}"
-            ),
-        })
-        plt.rcParams['path.simplify'] = True
-        plt.rcParams['path.simplify_threshold'] = 0.1
-        return func(*args, **kwargs)
-    return wrapper
+    # give matplotlib a LaTeX formatting
+    plt.rcParams.update({
+        "text.usetex": True,
+        "font.family": "serif",
+        "font.serif": ["Utopia"],
+        "text.latex.preamble": (
+            r"\usepackage[T1]{fontenc}"
+            r"\usepackage{lmodern}"
+            r"\usepackage{siunitx}"
+            r"\usepackage{bm}"
+            r"\sisetup{group-separator={\,},group-minimum-digits=4}"
+        ),
+    })
+    plt.rcParams['path.simplify'] = True
+    plt.rcParams['path.simplify_threshold'] = 0.1
+    return None
 
 
 

@@ -44,7 +44,7 @@ def _thermoplot_cache_path(thermoplot_config_file_path: str, thermoplot_overwrit
     return _THERMOPLOT_CACHE_DIR / f"{cache_key}.pkl"
 
 
-@configure_matplotlib
+
 def thermoplot_cached(thermoplot_config_file_path: str, thermoplot_overwrite_settings: dict[str, list] = None) -> type[plt.Figure]:
     """
     Disk-cached version of the thermoplot function.
@@ -84,6 +84,10 @@ def thermoplot(thermoplot_config_file_path: str, thermoplot_overwrite_settings: 
     # load configuration 
     config = ConfigThermoplot(config_file=thermoplot_config_file_path)
     config.get_thermoplot_settings()
+
+    # if latex formatting is desired, apply
+    if config.thermoplot_settings["latex_formatting"]:
+        configure_matplotlib()
 
     # if thermoplot settings are provided, overwrite any setting that is specified to be overwritten through the thermoplot_settings dictionary.  
     if thermoplot_overwrite_settings is not None:

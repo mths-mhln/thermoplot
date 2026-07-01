@@ -53,7 +53,8 @@ class ConfigThermoplot:
             "show_isolines",
             "show_critical_point",
             "show_critical_isoline",
-            "n_pts"
+            "n_pts",
+            "latex_formatting"
         ]
         if self.diagram_type == "TS":
             necessary_thermoplot_settings.extend([
