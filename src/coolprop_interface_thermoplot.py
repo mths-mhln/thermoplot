@@ -28,14 +28,26 @@ class CoolPropAbstractState():
         Name: str
             Name of the fluid as recognized by CoolProp.
         """
+        # extract properties necessary for initializing abstractstate
         if library == 'CoolProp':
             library = 'HEOS'
         self.Name = name
         self.Library = library
         self._abstract_state = None
+        # legacy code. I do not imagine myself putting a fluid name with [1] at the end, but it is in there, so i assume it can be called... 
+        str_len = int(len(self.Name))
+        if str_len > 3:
+            if self.Name[str_len - 3: str_len] == '[1]':
+                name = self.Name[0:str_len - 3]
+            else:
+                name = self.Name
+        else:
+            name = self.Name
+        # initalize abstractstate:
+        self._abstract_state = AbstractState(self.Library, name)
 
     @staticmethod
-    def _update_wrapper(AS, input_spec, x, y):
+    def _update_wrapper(AS: AbstractState, input_spec: CP.PQ_INPUTS, x: float, y: float) -> bool:
         """
         Coolprop utility to allow nan return upon vectorized evaluation of AbstractState.
         """
@@ -46,7 +58,7 @@ class CoolPropAbstractState():
             print("Failed to update abstractstate. CoolProp output:", e)
             return True
 
-    def _get_abstract_state(self):
+    def _get_abstract_state(self) -> AbstractState:
         """
         If AbstractState instance is already created for the fluid type and library, no need to create it over and over again.
         """
@@ -59,7 +71,7 @@ class CoolPropAbstractState():
             self._abstract_state = AbstractState(self.Library, name)
         return self._abstract_state
 
-    def _PropsSI_syntax_to_AbstractState_syntax(self, str):
+    def _PropsSI_syntax_to_AbstractState_syntax(self, str: str) -> str:
         """
         Converts PropsSI syntax to AbstractState syntax. for properties that are typically mass-averaged, the subscript mass should be added behind it.
         """
@@ -69,10 +81,11 @@ class CoolPropAbstractState():
         else:
             return str
         
-    def _get_input_spec(self, x_str, y_str):
+    def _get_input_spec(self, x_str: str, y_str: str) -> tuple[CP.PQ_INPUTS, bool]:
         """
         Method to convert specified PropsSI input spec into a coolprop inputs object, required for updating the abstractstate thermodynamic state in update_and_get using the coolprop abstractstate
-        update method. 
+        update method. Note, not really CP.PQ_INPUTS, can be other pairs, but i had to give an example. 
+        For all inputs, refer to "input_pairs" section of https://coolprop.org/_static/doxygen/html/namespace_cool_prop.html#aa1ce7c368d1058004293708038241850a648039a97f7392876038eaf56cf91e95
 
         Attributes
         ----------
@@ -95,7 +108,7 @@ class CoolPropAbstractState():
         
     @staticmethod # necessary to allow for vectorization of the method
     @np.vectorize(otypes=[float])
-    def _update_and_get(AS, input_spec, x, y, output, reorder):
+    def _update_and_get(AS: AbstractState, input_spec: CP.PQ_INPUTS, x: float, y: float, output: str, reorder: bool):
         """
         Vectorized method to update the AbstractState with the specified input specification and input variables, and return the specified output variable. 
         The method returns nan for points that are not valid for the AbstractState (e.g. points outside the phase envelope).
@@ -131,7 +144,7 @@ class CoolPropAbstractState():
             return AS.first_partial_deriv(CP.iP, CP.iDmass, CP.iT)
         return getattr(AS, output)()    
 
-    def PropsSI(self, prop, x_str=None, x=None, y_str=None, y=None):
+    def PropsSI(self, prop: str, x_str: str = None, x: float | np.ndarray = None, y_str: str = None, y: float | np.ndarray = None):
         """
         Integral functionality, uses various methods to convert user input to an input spec accepted by AbstractState syntax, and extracts fluid thermodynamic property according to user specification. 
         using a CoolProp AbstractState syntax. 
@@ -155,15 +168,7 @@ class CoolPropAbstractState():
             Value of the desired output variable, e.g. temperature or pressure. Will be a float for single point evaluation, or a numpy array for vectorized evaluation. 
             For points that are not valid for the AbstractState (e.g. points outside the phase envelope), nan will be returned.       
         """
-        str_len = int(len(self.Name))
-        if str_len > 3:
-            if self.Name[str_len - 3: str_len] == '[1]':
-                name = self.Name[0:str_len - 3]
-            else:
-                name = self.Name
-        else:
-            name = self.Name
-        AS = AbstractState(self.Library, name)
+        AS = self._get_abstract_state()
         if prop in ['Tcrit', 'Pcrit', 'Dcrit', 'Tmax', 'M', 'Ttriple']: # translation necessary to comply with AS syntax, see: https://coolprop.org/_static/doxygen/html/class_cool_prop_1_1_abstract_state.html
             if prop== 'Tcrit':
                 return AS.T_critical()
@@ -199,9 +204,9 @@ class CoolPropAbstractState():
                 "Cpmass": "cpmass",
                 "Cvmass": "cvmass",
                 "d(P)/d(D)|T": "drhomassdPcT",
+                "Phase": "phase"
             }
+        # if both input properties are exactly the 
             return self._update_and_get(AS, input_spec, x, y, translator[prop_AS], reorder)
-        
-
 
 
