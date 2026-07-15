@@ -35,7 +35,7 @@ def _thermoplot_cache_path(thermoplot_config_file_path: str, thermoplot_overwrit
     # save input to cache
     cache_input = (
         thermoplot_config_file_path,
-        Path(thermoplot_config_file_path).stat().st_mtime_ns, # include modification time of config file in cache key to ensure that cache is invalidated when config file is updated
+        Path(thermoplot_config_file_path).read_bytes(), # include file contents in cache key so any config change invalidates the cache
         overwrite_settings_key,
     )
     # create cache key by hashing the cache input. Use pickle to serialize the cache input, and then hash the serialized input using sha256 to create a unique 
@@ -51,8 +51,12 @@ def thermoplot_cached(thermoplot_config_file_path: str, thermoplot_overwrite_set
     """
     cache_path = _thermoplot_cache_path(thermoplot_config_file_path, thermoplot_overwrite_settings)
     if cache_path.exists():
+        print("cache exists")
         with cache_path.open("rb") as cache_file:
             return pickle.load(cache_file)
+    else: 
+        print("cache does not exist")
+
 
     fig = thermoplot(thermoplot_config_file_path, thermoplot_overwrite_settings)
     _THERMOPLOT_CACHE_DIR.mkdir(parents=True, exist_ok=True)
@@ -85,10 +89,6 @@ def thermoplot(thermoplot_config_file_path: str, thermoplot_overwrite_settings: 
     config = ConfigThermoplot(config_file=thermoplot_config_file_path)
     config.get_thermoplot_settings()
 
-    # if latex formatting is desired, apply
-    if config.thermoplot_settings["latex_formatting"]:
-        configure_matplotlib()
-
     # if thermoplot settings are provided, overwrite any setting that is specified to be overwritten through the thermoplot_settings dictionary.  
     if thermoplot_overwrite_settings is not None:
         for setting_name, setting_value in thermoplot_overwrite_settings.items():
@@ -96,6 +96,16 @@ def thermoplot(thermoplot_config_file_path: str, thermoplot_overwrite_settings: 
                 config.thermoplot_settings[setting_name] = setting_value
             except KeyError:
                 print("Attempting to adapt thermoplot settings with user-provided settings, but the following setting name is not recognized: ", setting_name)
+
+    # apply or clear LaTeX-specific matplotlib settings after all overrides have been resolved.
+    if config.thermoplot_settings["latex_formatting"]:
+        configure_matplotlib()
+    # else:
+    #     plt.rcParams.update({
+    #         "text.usetex": False,
+    #         "font.family": "sans-serif",
+    #         "text.latex.preamble": "",
+    #     })
 
     # Create figure and axis objects
     fig, ax = plt.subplots(figsize=(10, 7))

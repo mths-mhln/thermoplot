@@ -16,18 +16,19 @@ from configthermoplot import ConfigThermoplot
 
 
 
+
 def computeSoundSpeed_p_rho(p: float | np.ndarray, rho: float | np.ndarray, AS: CoolPropAbstractState) -> float | np.ndarray:
-        # Ensure inputs are numpy arrays
-        p = np.asarray(p, dtype=float)
-        rho = np.asarray(rho, dtype=float)
-        p, rho = np.broadcast_arrays(p, rho)
-        
-        # Vectorize the core function, passing self.fluid
-        vectorized_func = np.vectorize(
-            partial(_computeSingleSoundSpeed_p_rho, AS=AS),
-            otypes=[float]
-        )
-        return vectorized_func(p, rho)
+    # Ensure inputs are numpy arrays
+    p = np.asarray(p, dtype=float)
+    rho = np.asarray(rho, dtype=float)
+    p, rho = np.broadcast_arrays(p, rho)
+    
+    # Vectorize the core function, passing self.fluid
+    vectorized_func = np.vectorize(
+        partial(_computeSingleSoundSpeed_p_rho, AS=AS),
+        otypes=[float]
+    )
+    return vectorized_func(p, rho)
 
 @staticmethod
 def _computeSingleSoundSpeed_p_rho(p: float, rho: float, AS: CoolPropAbstractState) -> float:
@@ -99,6 +100,17 @@ def _computeSingleSoundSpeed_p_rho(p: float, rho: float, AS: CoolPropAbstractSta
         # has no risk of being -9999980 or nan either, so we can be ensured about stability.
         a = _computeSingleSoundSpeed_p_rho_two_phase(p, rho)
         return a
+
+
+input_file_path = "config/R1234ze(E).ini"
+fig = thermoplot_cached(input_file_path)
+# axes = fig.get_axes()
+# AS = CoolPropAbstractState("REFPROP", "R1234ze(E)")
+# config = ConfigThermoplot(config_file=input_file_path)
+# config.get_thermoplot_settings()
+# dome_coords = construct_saturation_dome(config, AS)
+# axes[0].plot(dome_coords[:, 0], dome_coords[:, 1], color='red', lw=1.0, zorder=3) # plot saturation dome
+plt.show()
 
 input_file_path = "config/CO2.ini"
 fig = thermoplot_cached(input_file_path)
@@ -205,50 +217,7 @@ def _computeSingleSoundSpeed_de_lorenzo_p_rho(p: float, rho: float, AS: CoolProp
         return a
 
 
-
-
-
-# create a plot showing variation of HEM sound speed for p = 0.1 MPa and quality varying from 0-1
-AS = CoolPropAbstractState("REFPROP", "Water")
-p = 0.1e6  # 0.1 MPa
-Q = np.linspace(0.000001,0.15, 124)
-# convert quality into void fraction 
-rho = AS.PropsSI("D", "P", p, "Q", Q)
-rho_v = AS.PropsSI("D", "P", p, "Q", 1)
-alpha_V = Q * (rho / rho_v)
-expected_soundSpeed_HEM = computeSoundSpeed_p_rho(p, rho, AS)
-print("expected", expected_soundSpeed_HEM)
-
-
-
-# the next parameters are known from how the test case was constructed.
-p_new = np.ones_like(alpha_V) * 0.1e6  # 0.1 MPa
-rho_v_new = AS.PropsSI("D", "P", p, "Q", np.ones_like(alpha_V))
-
-# solve equation iteratively for rho
-def func(Q, alpha_v, rho_v, p):
-    if np.any(Q < 0) or np.any(Q > 1):
-        return np.inf  # Return a large number to indicate an invalid solution
-    else:
-        return (AS.PropsSI("D", "P", p, "Q", Q)/rho_v)*Q - alpha_v
-from scipy.optimize import newton
-Q_new = newton(func, x0=np.full_like(alpha_V, 1e-6),
-        args=(alpha_V, rho_v_new, p_new))
-
-rho_new = AS.PropsSI("D", "P", p_new, "Q", Q_new)
-
-# compute the sound speed using the FluidReal method
-soundSpeed_HEM = computeSoundSpeed_p_rho(p_new, rho_new, AS)
-
-print("Sound Speed (HEM):", soundSpeed_HEM)
-
-print("difference", soundSpeed_HEM - expected_soundSpeed_HEM)
-
-
-
-# soundSpeed_HEM = np.array([_computeSingleSoundSpeed_p_rho(p, AS.PropsSI("D", "P", p, "Q", Q_input), AS) for Q_input in Q])
-soundSpeed_de_Lorenzo = np.array([_computeSingleSoundSpeed_de_lorenzo_p_rho(p, AS.PropsSI("D", "P", p, "Q", Q_input), AS) for Q_input in Q])
-alpha_v_de_Lorenzo = alpha_V
+AS = CoolPropAbstractState("REFPROP", "water")
 
 df = pd.read_csv("HEM_sos_benchmark_of_dem_fig_1b.csv")
 data = dict.fromkeys(df.columns)
@@ -257,8 +226,8 @@ for i, col in enumerate(df.columns):
 
 alpha_V = data["alpha_V"]
 # the next parameters are known from how the test case was constructed.
-p_new = np.ones_like(alpha_V) * 0.1e6  # 0.1 MPa
-rho_v_new = AS.PropsSI("D", "P", p, "Q", np.ones_like(alpha_V))
+p = np.ones_like(alpha_V) * 0.1e6  # 0.1 MPa
+rho_v = AS.PropsSI("D", "P", p, "Q", np.ones_like(alpha_V))
 
 # solve equation iteratively for rho
 def func(Q, alpha_v, rho_v, p):
@@ -268,36 +237,36 @@ def func(Q, alpha_v, rho_v, p):
         return (AS.PropsSI("D", "P", p, "Q", Q)/rho_v)*Q - alpha_v
 from scipy.optimize import newton
 Q_new = newton(func, x0=np.full_like(alpha_V, 1e-6),
-        args=(alpha_V, rho_v_new, p_new))
+        args=(alpha_V, rho_v, p))
 
-print(Q_new)
-
-rho_new = AS.PropsSI("D", "P", p_new, "Q", Q_new)
+rho_new = AS.PropsSI("D", "P", p, "Q", Q_new)
 
 # compute the sound speed using the FluidReal method
-soundSpeed_HEM = computeSoundSpeed_p_rho(p_new, rho_new, AS)
-
-# df_tst = pd.read_csv("test.csv")
-# data_tst = dict.fromkeys(df_tst.columns)
-# for i, col in enumerate(df_tst.columns):
-#     data_tst[col] = df_tst.iloc[1:, i].values
-
-# df_de_lorenzo_tst = pd.read_csv("test_de_lorenzo.csv")
-# data_de_lorenzo_tst = dict.fromkeys(df_de_lorenzo_tst.columns)
-# for i, col in enumerate(df_de_lorenzo_tst.columns):
-#     data_de_lorenzo_tst[col] = df_de_lorenzo_tst.iloc[1:, i].values
+soundSpeed_HEM = computeSoundSpeed_p_rho(p, rho_new, AS)
 
 
-# plt.scatter(data_tst["alpha_V"], data_tst["HEM_sound_speed"], label="HEM Sound Speed (should match HEM sound speed)", color='orange', zorder=3)
-# plt.scatter(data_de_lorenzo_tst["alpha_V"], data_de_lorenzo_tst["De_Lorenzo_sound_speed"], label="De Lorenzo Sound Speed (should match HEM Sound Speed (De Lorenzo et al.))", color='red', zorder=3)
-# plt.plot(data["alpha_V"], data["HEM_sound_speed"], label="HEM Sound Speed (De Lorenzo et al.)", color='blue', lw=1.0, zorder=3)
-plt.scatter(alpha_V, soundSpeed_HEM, label="HEM Sound Speed", color='green', marker='x', zorder=3)
-plt.plot(alpha_v_de_Lorenzo, soundSpeed_de_Lorenzo, label="De Lorenzo Sound Speed", color='red', lw=1.0, zorder=3)
-
-
-plt.xlabel("Quality")
+plt.plot(alpha_V, soundSpeed_HEM, label="HEM Sound Speed (m/s)", color='blue', lw=1.0, zorder=3)
+plt.plot(alpha_V, data["HEM_sound_speed"], label="De Lorenzo Sound Speed (m/s)", color='orange', lw=1.0, zorder=3)
 plt.ylim(0,120)
-plt.ylabel("HEM Sound Speed (m/s)")
-plt.title("HEM Sound Speed vs Quality at 0.1 MPa")
-plt.legend()
+
 plt.show()
+
+def rel_abs_error(a1, a2):
+    rel_error = np.abs(a1 - a2) / np.abs(a2)
+    abs_error = np.abs(a1 - a2)
+    return rel_error, abs_error
+
+print("Max relative error:", np.max(rel_abs_error(soundSpeed_HEM, data["HEM_sound_speed"])[0]), " max absolute error:", np.max(rel_abs_error(soundSpeed_HEM, data["HEM_sound_speed"])[1]))
+
+# convert to log space
+soundSpeed_HEM_log = np.log10(soundSpeed_HEM)
+soundSpeed_DeLorenzo_log = np.log10(data["HEM_sound_speed"])
+
+print("Max relative error (log space):", np.max(rel_abs_error(soundSpeed_HEM_log, soundSpeed_DeLorenzo_log)[0]), "max absolute error (log space):", np.max(rel_abs_error(soundSpeed_HEM_log, soundSpeed_DeLorenzo_log)[1]))
+
+# plot
+plt.plot(alpha_V, soundSpeed_HEM_log, label="HEM Sound Speed (log10)", color='blue', lw=1.0, zorder=3)
+plt.plot(alpha_V, soundSpeed_DeLorenzo_log, label="De Lorenzo Sound Speed (log10)", color='orange', lw=1.0, zorder=3)
+
+plt.show()
+
