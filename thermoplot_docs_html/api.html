@@ -1,0 +1,735 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Troubleshooting" href="troubleshooting.html"><link rel="prev" title="Examples" href="examples/index.html">
+
+    <!-- Generated with Sphinx 9.1.1 and Furo 2025.12.19 -->
+        <title>API reference - Thermoplot</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">Thermoplot</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <span class="sidebar-brand-text">Thermoplot</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/configuration.html">Configuration file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/diagrams.html">What is drawn</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/overriding_settings.html">Overriding settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/customizing_figures.html">Working with the figure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/caching.html">Caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/property_interface.html">Property interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide/integration.html">Using Thermoplot in another project</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">API reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="limitations.html">Known limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="building_docs.html">Building this documentation</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/mths-mhln/thermoplot/blob/master/docs/api.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/mths-mhln/thermoplot/edit/master/docs/api.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section class="tex2jax_ignore mathjax_ignore" id="api-reference">
+<h1>API reference<a class="headerlink" href="#api-reference" title="Link to this heading">¶</a></h1>
+<p>The two plotting functions are the public interface of Thermoplot. The other modules are documented for users who want to build their own diagrams or evaluate properties directly.</p>
+<section id="plotting">
+<h2>Plotting<a class="headerlink" href="#plotting" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="thermoplot.thermoplot">
+<span class="sig-prename descclassname"><span class="pre">thermoplot.</span></span><span class="sig-name descname"><span class="pre">thermoplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thermoplot_config_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thermoplot_overwrite_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/thermoplot.html#thermoplot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#thermoplot.thermoplot" title="Link to this definition">¶</a></dt>
+<dd><p>Integral functionality of the package. Combines functionality by all submodules to produce a thermodynamic diagram figure according
+to user specifications in the config file, and returns the figure object to the user suc that they can further adapt it if they wish.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>thermoplot_config_file_path</strong> (<em>str</em>) – File path to the config file with user specifications for the thermoplot. See configthermoplot.py for details on how to specify the config file and which settings are necessary.</p></li>
+<li><p><strong>thermoplot_overwrite_settings</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>list</em><em>]</em><em>, </em><em>optional</em>) – A dictionary with keys corresponding to thermoplot settings (e.g. “show_isolines”) and values corresponding to the value that the user wishes to overwrite this setting with.
+This allows users to overwrite settings specified in the config file without having to adapt the config file itself. This is useful for example when users want to produce multiple
+thermoplots with slightly different settings, but do not want to create multiple config files for this. By default, this is set to None, meaning that no settings will be overwritten
+and the function will use the settings specified in the config file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The figure object containing the thermodynamic diagram.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>plt.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="thermoplot.thermoplot_cached">
+<span class="sig-prename descclassname"><span class="pre">thermoplot.</span></span><span class="sig-name descname"><span class="pre">thermoplot_cached</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thermoplot_config_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thermoplot_overwrite_settings</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/thermoplot.html#thermoplot_cached"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#thermoplot.thermoplot_cached" title="Link to this definition">¶</a></dt>
+<dd><p>Disk-cached version of the thermoplot function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>thermoplot_config_file_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>thermoplot_overwrite_settings</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>list</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>type[matplotlib.pyplot.Figure]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="configthermoplot.ConfigThermoplot">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">configthermoplot.</span></span><span class="sig-name descname"><span class="pre">ConfigThermoplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/configthermoplot.html#ConfigThermoplot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configthermoplot.ConfigThermoplot" title="Link to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config_file</strong> (<em>str</em>)</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="configthermoplot.ConfigThermoplot.get_thermoplot_settings">
+<span class="sig-name descname"><span class="pre">get_thermoplot_settings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/configthermoplot.html#ConfigThermoplot.get_thermoplot_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#configthermoplot.ConfigThermoplot.get_thermoplot_settings" title="Link to this definition">¶</a></dt>
+<dd><p>Verify is all necessary settings are specified in the config file. If not, inform user
+on which are missing. If yes, extract all settings and store to self in dictionary format
+for future extraction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="property-interface">
+<h2>Property interface<a class="headerlink" href="#property-interface" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="coolprop_interface_thermoplot.CoolPropAbstractState">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">coolprop_interface_thermoplot.</span></span><span class="sig-name descname"><span class="pre">CoolPropAbstractState</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">library</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluid_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coolprop_interface_thermoplot.html#CoolPropAbstractState"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coolprop_interface_thermoplot.CoolPropAbstractState" title="Link to this definition">¶</a></dt>
+<dd><p>CoolProp AbstractState wrapper. allows user to use the familiar PropsSI syntax for CoolProp property extraction, while using the AbstractState under the hood for better performance.
+The wrapper is necessary to allow vectorized evaluation of the AbstractState, which is not natively supported by CoolProp. Nan will be returned for points that are not valid for the
+AbstractState (e.g. points outside the phase envelope). For more information on the AbstractState and its methods, see: <a class="reference external" href="https://coolprop.org/_static/doxygen/html/class_cool_prop_1_1_abstract_state.html">https://coolprop.org/_static/doxygen/html/class_cool_prop_1_1_abstract_state.html</a></p>
+<p class="rubric">Methods</p>
+<dl>
+<dt>PropsSI(prop, x_str, x, y_str, y)</dt><dd><p>Extracts the specified property using the AbstractState. The input specification is automatically determined based on the x_str and y_str arguments, and the property is extracted using the
+appropriate AbstractState method. For more information on the input specifications, see: <a class="reference external" href="https://coolprop.org/coolprop/wrappers/Python/html/index.html#input-specifications">https://coolprop.org/coolprop/wrappers/Python/html/index.html#input-specifications</a></p>
+<p><cite>prop</cite> may also be a tuple of property strings, e.g. (“T”, “P”, “Dmass”). In that case, the AbstractState is
+updated only ONCE per (x, y) point, and all requested properties are extracted from that single update. This
+avoids the cost of repeatedly calling AS.update() for every property you want at the same state point. The
+return value is then a tuple of floats/arrays (one per requested property, in the order given), matching the
+order of <cite>prop</cite>.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="coolprop_interface_thermoplot.CoolPropAbstractState.PropsSI">
+<span class="sig-name descname"><span class="pre">PropsSI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_str</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/coolprop_interface_thermoplot.html#CoolPropAbstractState.PropsSI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#coolprop_interface_thermoplot.CoolPropAbstractState.PropsSI" title="Link to this definition">¶</a></dt>
+<dd><p>Integral functionality, uses various methods to convert user input to an input spec accepted by AbstractState syntax, and extracts fluid thermodynamic property according to user specification.
+using a CoolProp AbstractState syntax.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prop</strong> (<em>str</em><em> | </em><em>tuple</em><em>[</em><em>str</em><em>]</em>) – String corresponding to the desired output variable, e.g. “T” for temperature or “P” for pressure.
+May also be a tuple of such strings, e.g. (“T”, “P”, “Dmass”), to request several properties at the
+same (x, y) point. When a tuple is given, the AbstractState is updated only ONCE per point and every
+requested property is read off that single update, instead of updating once per property.</p></li>
+<li><p><strong>x_str</strong> (<em>str</em>) – String corresponding to one of the input variables, e.g. “T” for temperature or “P” for pressure.</p></li>
+<li><p><strong>x</strong> (<em>float</em><em> | </em><em>np.ndarray</em>) – Value of the first input variable, e.g. temperature or pressure. Can be a float for single point evaluation, or a numpy array for vectorized evaluation.</p></li>
+<li><p><strong>y_str</strong> (<em>str</em>) – String corresponding to the other input variable, e.g. “T” for temperature or “P” for pressure.</p></li>
+<li><p><strong>y</strong> (<em>float</em><em> | </em><em>np.ndarray</em>) – Value of the second input variable e.g. temperature or pressure. Can be a float for single point evaluation, or a numpy array for vectorized evaluation.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>output</strong> – Value of the desired output variable, e.g. temperature or pressure. Will be a float for single point evaluation, or a numpy array for vectorized evaluation.
+For points that are not valid for the AbstractState (e.g. points outside the phase envelope), nan will be returned.
+If <cite>prop</cite> was a tuple, a tuple of such values is returned instead, one per requested property, in the
+same order as <cite>prop</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | np.ndarray | tuple[float | np.ndarray, …]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-isolines">
+<span id="isolines"></span><h2>Isolines<a class="headerlink" href="#module-isolines" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="isolines.construct_saturation_dome">
+<span class="sig-prename descclassname"><span class="pre">isolines.</span></span><span class="sig-name descname"><span class="pre">construct_saturation_dome</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AS</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/isolines.html#construct_saturation_dome"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#isolines.construct_saturation_dome" title="Link to this definition">¶</a></dt>
+<dd><p>Constructs the saturation dome by evaluating the saturation branches at control points of the independent variable, and combining these with the critical point coordinates.
+The saturation dome is returned as an array of coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="#configthermoplot.ConfigThermoplot" title="configthermoplot.ConfigThermoplot"><em>ConfigThermoplot</em></a>) – Configuration object containing thermoplot settings, extracted from a .ini file. For more information please refer to configthermoplot.py</p></li>
+<li><p><strong>AS</strong> (<a class="reference internal" href="#coolprop_interface_thermoplot.CoolPropAbstractState" title="coolprop_interface_thermoplot.CoolPropAbstractState"><em>CoolPropAbstractState</em></a>) – Abstract state object for property calculations. Created in coolprop_interface_thermoplot.py. See file for more information.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>ndarray</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="isolines.construct_quality_isolines">
+<span class="sig-prename descclassname"><span class="pre">isolines.</span></span><span class="sig-name descname"><span class="pre">construct_quality_isolines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iq_lines</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/isolines.html#construct_quality_isolines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#isolines.construct_quality_isolines" title="Link to this definition">¶</a></dt>
+<dd><p>Constructs quality isolines by evaluating the quality isoline at control points of the independent variable. The quality isolines are returned as a list of dictionaries
+containing the isoline value and coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="#configthermoplot.ConfigThermoplot" title="configthermoplot.ConfigThermoplot"><em>ConfigThermoplot</em></a>) – Configuration object containing thermoplot settings, extracted from a .ini file. For more information please refer to configthermoplot.py</p></li>
+<li><p><strong>AS</strong> (<a class="reference internal" href="#coolprop_interface_thermoplot.CoolPropAbstractState" title="coolprop_interface_thermoplot.CoolPropAbstractState"><em>CoolPropAbstractState</em></a>) – Abstract state object for property calculations. Created in coolprop_interface_thermoplot.py. See file for more information.</p></li>
+<li><p><strong>n_iq_lines</strong> (<em>int</em>) – Number of quality isolines to construct. Quality isolines are constructed for quality values between 0 and 1, so the quality values at which to construct the isolines are
+determined by dividing the range [0,1] into n_iq_lines evenly spaced intervals.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>quality_isolines_data</strong> – List of dictionaries containing the isoline data, including the “coords” key with the isoline coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="isolines.construct_critical_isoline">
+<span class="sig-prename descclassname"><span class="pre">isolines.</span></span><span class="sig-name descname"><span class="pre">construct_critical_isoline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_pts</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/isolines.html#construct_critical_isoline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#isolines.construct_critical_isoline" title="Link to this definition">¶</a></dt>
+<dd><p>Constructs the critical isoline by evaluating the critical isoline at control points of the independent variable. The critical isoline is returned as an array of coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="#configthermoplot.ConfigThermoplot" title="configthermoplot.ConfigThermoplot"><em>ConfigThermoplot</em></a>) – Configuration object containing thermoplot settings, extracted from a .ini file. For more information please refer to configthermoplot.py</p></li>
+<li><p><strong>AS</strong> (<a class="reference internal" href="#coolprop_interface_thermoplot.CoolPropAbstractState" title="coolprop_interface_thermoplot.CoolPropAbstractState"><em>CoolPropAbstractState</em></a>) – Abstract state object for property calculations. Created in coolprop_interface_thermoplot.py. See file for more information.</p></li>
+<li><p><strong>n_pts</strong> (<em>int</em>) – Number of control points at which to evaluate the critical isoline. The control points are evenly spaced between the lower bound of the independent variable range and the critical point.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>critical_isoline_coords</strong> – Array of coordinates of the critical isoline.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="isolines.isobar_lines_ts">
+<span class="sig-prename descclassname"><span class="pre">isolines.</span></span><span class="sig-name descname"><span class="pre">isobar_lines_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/isolines.html#isobar_lines_ts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#isolines.isobar_lines_ts" title="Link to this definition">¶</a></dt>
+<dd><p>Construction of isobars in TS diagram starts at the lowest possible isobar for which the pressure is still larger than the triple point pressure, and extends to 3 times the critical pressure.
+This decision is arbitrary, but provides a good coverage of the fluid-vapour region of the phase diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="#configthermoplot.ConfigThermoplot" title="configthermoplot.ConfigThermoplot"><em>ConfigThermoplot</em></a>) – Configuration object containing thermoplot settings, extracted from a .ini file. For more information please refer to configthermoplot.py</p></li>
+<li><p><strong>AS</strong> (<a class="reference internal" href="#coolprop_interface_thermoplot.CoolPropAbstractState" title="coolprop_interface_thermoplot.CoolPropAbstractState"><em>CoolPropAbstractState</em></a>) – Abstract state object for property calculations. Created in coolprop_interface_thermoplot.py. See file for more information.</p></li>
+<li><p><strong>n_lines</strong> (<em>int</em>) – Number of isobar lines to construct.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>isobar_lines_data_ts</strong> – List of dictionaries containing the isoline data, including the “coords” key with the isoline coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="isolines.isenthalp_lines_ts">
+<span class="sig-prename descclassname"><span class="pre">isolines.</span></span><span class="sig-name descname"><span class="pre">isenthalp_lines_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">18</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/isolines.html#isenthalp_lines_ts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#isolines.isenthalp_lines_ts" title="Link to this definition">¶</a></dt>
+<dd><p>Construction of isenthalps in TS diagram is more complicated. First a grid is constructed entropy and temperature pairs. The enthalpy is evaluated at each of these pairs, and the
+thermpdyanmic calls that yield a value (that are not outside of the thdy library’s scope) are recorded. Based on the min and max value that is extractable within the plot range,
+the isenthalp iso value range is constructed. The isenthalp is then constructed by evaluating the entropy and temperature from the isenthalp iso value and the isobar values that
+are represetned on the plot, chosen arbitrarily, see isobar_lines_ts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="#configthermoplot.ConfigThermoplot" title="configthermoplot.ConfigThermoplot"><em>ConfigThermoplot</em></a>) – Configuration object containing thermoplot settings, extracted from a .ini file. For more information please refer to configthermoplot.py</p></li>
+<li><p><strong>AS</strong> (<a class="reference internal" href="#coolprop_interface_thermoplot.CoolPropAbstractState" title="coolprop_interface_thermoplot.CoolPropAbstractState"><em>CoolPropAbstractState</em></a>) – Abstract state object for property calculations. Created in coolprop_interface_thermoplot.py. See file for more information.</p></li>
+<li><p><strong>n_lines</strong> (<em>int</em>) – Number of isenthalp lines to construct.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>isenthalp_lines_data_ts</strong> – List of dictionaries containing the isoline data, including the “coords” key with the isoline coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="isolines.isotherm_lines_ph">
+<span class="sig-prename descclassname"><span class="pre">isolines.</span></span><span class="sig-name descname"><span class="pre">isotherm_lines_ph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">18</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/isolines.html#isotherm_lines_ph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#isolines.isotherm_lines_ph" title="Link to this definition">¶</a></dt>
+<dd><p>Construction of isotherms in PH diagram is similar to the construction of isobars in TS diagram. Starts at the lowest possible isotherm for which the temperature is still larger
+than the triple point temperature, and extends to 1.5 times the critical temperature. This decision is arbitrary, but provides a good coverage of the fluid-vapour region of the phase diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="#configthermoplot.ConfigThermoplot" title="configthermoplot.ConfigThermoplot"><em>ConfigThermoplot</em></a>) – Configuration object containing thermoplot settings, extracted from a .ini file. For more information please refer to configthermoplot.py</p></li>
+<li><p><strong>AS</strong> (<a class="reference internal" href="#coolprop_interface_thermoplot.CoolPropAbstractState" title="coolprop_interface_thermoplot.CoolPropAbstractState"><em>CoolPropAbstractState</em></a>) – Abstract state object for property calculations. Created in coolprop_interface_thermoplot.py. See file for more information.</p></li>
+<li><p><strong>n_lines</strong> (<em>int</em>) – Number of isotherm lines to construct.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>isotherm_lines_data_ph</strong> – List of dictionaries containing the isoline data, including the “coords” key with the isoline coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="isolines.isentrop_lines_ph">
+<span class="sig-prename descclassname"><span class="pre">isolines.</span></span><span class="sig-name descname"><span class="pre">isentrop_lines_ph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/isolines.html#isentrop_lines_ph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#isolines.isentrop_lines_ph" title="Link to this definition">¶</a></dt>
+<dd><p>Construction of isentropes in PH diagram is similar to the construction of isenthalps in TS diagram. First a grid is constructed of enthalpy and pressure pairs. The entropy is
+evaluated at each of these pairs, and the thermpdyanmic calls that yield a value (that are not outside of the thdy library’s scope) are recorded. Based on the min and max value
+that is extractable within the plot range, the isentrop iso value range is constructed. The isentrop is then constructed by evaluating the enthalpy and pressure from the isentrop
+iso value and the isobar values that are represetned on the plot. This part is different from the isenthalps construction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="#configthermoplot.ConfigThermoplot" title="configthermoplot.ConfigThermoplot"><em>ConfigThermoplot</em></a>) – Configuration object containing thermoplot settings, extracted from a .ini file. For more information please refer to configthermoplot.py</p></li>
+<li><p><strong>AS</strong> (<a class="reference internal" href="#coolprop_interface_thermoplot.CoolPropAbstractState" title="coolprop_interface_thermoplot.CoolPropAbstractState"><em>CoolPropAbstractState</em></a>) – Abstract state object for property calculations. Created in coolprop_interface_thermoplot.py</p></li>
+<li><p><strong>n_lines</strong> (<em>int</em>) – Number of isentrop lines to construct.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>isentrop_lines_data_ph</strong> – List of dictionaries containing the isoline data, including the “coords” key with the isoline coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-labelling">
+<span id="labels"></span><h2>Labels<a class="headerlink" href="#module-labelling" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="labelling.compute_label_coord_and_angle">
+<span class="sig-prename descclassname"><span class="pre">labelling.</span></span><span class="sig-name descname"><span class="pre">compute_label_coord_and_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isoline_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frac</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_scale</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/labelling.html#compute_label_coord_and_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#labelling.compute_label_coord_and_angle" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the coordinates of the isoline label along the isoline, such that (1) the label is placed at the specified fraction along the isoline (if the isoline has 100 values, and frac=0.25,
+the label will be placed at the 25th value), and (2) the angle of the label such that it is aligned with the local slope of the isoline at that coordinate. Note that the angle should be computed in
+physical space, meaning that it is independent of the axis limits and units, and will look visually aligned with the isoline in the image. The function returns the label coordinates and angle as a
+tuple (label_coord, label_ang).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib axis object</em>)</p></li>
+<li><p><strong>isoline_data</strong> (<em>dict</em>) – Dictionary containing the isoline data, including the “coords” key with the isoline coordinates. For a clearer description of the structure of the dict, check out isolines.py</p></li>
+<li><p><strong>frac</strong> (<em>float</em>) – Fraction of the isoline length at which to place the label.</p></li>
+<li><p><strong>y_scale</strong> (<em>str</em>) – Scale of the y-axis (“linear” or “log”). Necessary for PH diagram on which the y axis is typically logarithmic.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple[<em>ndarray</em>, float] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="labelling.draw_isolines_labeled">
+<span class="sig-prename descclassname"><span class="pre">labelling.</span></span><span class="sig-name descname"><span class="pre">draw_isolines_labeled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isolines_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frac</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lbl_fmt_short</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lbl_fmt_named</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/labelling.html#draw_isolines_labeled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#labelling.draw_isolines_labeled" title="Link to this definition">¶</a></dt>
+<dd><p>Passes the computed isoline data and the computed label coordinates and angles to the axes object for later visualization using the plt.show functionality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib axis object</em>)</p></li>
+<li><p><strong>isolines_data</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – List of dictionaries containing the isoline data, including the “coords” key with the isoline coordinates.</p></li>
+<li><p><strong>color</strong> (<em>str</em>) – Color of the isolines.</p></li>
+<li><p><strong>frac</strong> (<em>float</em>) – Fraction of the isoline length at which to place the label.</p></li>
+<li><p><strong>lbl_fmt_short</strong> (<em>callable</em>) – Function to format the short label. Typically a lambda function, see use case in thermoplot.py</p></li>
+<li><p><strong>lbl_fmt_named</strong> (<em>callable</em>) – Function to format the named label. Typically a lambda function, see use case in thermoplot.py.</p></li>
+<li><p><strong>yscale</strong> (<em>str</em>) – Scale of the y-axis (“linear” or “log”). Necessary for PH diagram on which the y axis is typically logarithmic.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-utils">
+<span id="utilities"></span><h2>Utilities<a class="headerlink" href="#module-utils" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.configure_matplotlib">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">configure_matplotlib</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#configure_matplotlib"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.configure_matplotlib" title="Link to this definition">¶</a></dt>
+<dd><p>Simple function to configure matplotlib with the desired settings for the thermoplot.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.extract_critical_point">
+<span class="sig-prename descclassname"><span class="pre">utils.</span></span><span class="sig-name descname"><span class="pre">extract_critical_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AS</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/utils.html#extract_critical_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#utils.extract_critical_point" title="Link to this definition">¶</a></dt>
+<dd><p>Extract correct critical point coordinates. Depending on diagram type a different approach is necessary. The name of the diagram can be used to create a code that works in general.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>config</strong> (<a class="reference internal" href="#configthermoplot.ConfigThermoplot" title="configthermoplot.ConfigThermoplot"><em>ConfigThermoplot</em></a>) – Configuration object containing thermoplot settings, extracted from a .ini file. For more information please refer to configthermoplot.py</p></li>
+<li><p><strong>AS</strong> (<a class="reference internal" href="#coolprop_interface_thermoplot.CoolPropAbstractState" title="coolprop_interface_thermoplot.CoolPropAbstractState"><em>CoolPropAbstractState</em></a>) – Abstract state object for property calculations. Created in coolprop_interface_thermoplot.py. See file for more information.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array containing the critical point coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="troubleshooting.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Troubleshooting</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="examples/index.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Examples</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Matthias Van Mechelen
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">API reference</a><ul>
+<li><a class="reference internal" href="#plotting">Plotting</a><ul>
+<li><a class="reference internal" href="#thermoplot.thermoplot"><code class="docutils literal notranslate"><span class="pre">thermoplot()</span></code></a></li>
+<li><a class="reference internal" href="#thermoplot.thermoplot_cached"><code class="docutils literal notranslate"><span class="pre">thermoplot_cached()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration">Configuration</a><ul>
+<li><a class="reference internal" href="#configthermoplot.ConfigThermoplot"><code class="docutils literal notranslate"><span class="pre">ConfigThermoplot</span></code></a><ul>
+<li><a class="reference internal" href="#configthermoplot.ConfigThermoplot.get_thermoplot_settings"><code class="docutils literal notranslate"><span class="pre">ConfigThermoplot.get_thermoplot_settings()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#property-interface">Property interface</a><ul>
+<li><a class="reference internal" href="#coolprop_interface_thermoplot.CoolPropAbstractState"><code class="docutils literal notranslate"><span class="pre">CoolPropAbstractState</span></code></a><ul>
+<li><a class="reference internal" href="#coolprop_interface_thermoplot.CoolPropAbstractState.PropsSI"><code class="docutils literal notranslate"><span class="pre">CoolPropAbstractState.PropsSI()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-isolines">Isolines</a><ul>
+<li><a class="reference internal" href="#isolines.construct_saturation_dome"><code class="docutils literal notranslate"><span class="pre">construct_saturation_dome()</span></code></a></li>
+<li><a class="reference internal" href="#isolines.construct_quality_isolines"><code class="docutils literal notranslate"><span class="pre">construct_quality_isolines()</span></code></a></li>
+<li><a class="reference internal" href="#isolines.construct_critical_isoline"><code class="docutils literal notranslate"><span class="pre">construct_critical_isoline()</span></code></a></li>
+<li><a class="reference internal" href="#isolines.isobar_lines_ts"><code class="docutils literal notranslate"><span class="pre">isobar_lines_ts()</span></code></a></li>
+<li><a class="reference internal" href="#isolines.isenthalp_lines_ts"><code class="docutils literal notranslate"><span class="pre">isenthalp_lines_ts()</span></code></a></li>
+<li><a class="reference internal" href="#isolines.isotherm_lines_ph"><code class="docutils literal notranslate"><span class="pre">isotherm_lines_ph()</span></code></a></li>
+<li><a class="reference internal" href="#isolines.isentrop_lines_ph"><code class="docutils literal notranslate"><span class="pre">isentrop_lines_ph()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-labelling">Labels</a><ul>
+<li><a class="reference internal" href="#labelling.compute_label_coord_and_angle"><code class="docutils literal notranslate"><span class="pre">compute_label_coord_and_angle()</span></code></a></li>
+<li><a class="reference internal" href="#labelling.draw_isolines_labeled"><code class="docutils literal notranslate"><span class="pre">draw_isolines_labeled()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-utils">Utilities</a><ul>
+<li><a class="reference internal" href="#utils.configure_matplotlib"><code class="docutils literal notranslate"><span class="pre">configure_matplotlib()</span></code></a></li>
+<li><a class="reference internal" href="#utils.extract_critical_point"><code class="docutils literal notranslate"><span class="pre">extract_critical_point()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    </body>
+</html>
