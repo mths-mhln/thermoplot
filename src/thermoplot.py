@@ -15,7 +15,6 @@ from labelling import draw_isolines_labeled
 from isolines import (isobar_lines_ts, isenthalp_lines_ts, isotherm_lines_ph, 
         isentrop_lines_ph, construct_quality_isolines,
         construct_saturation_dome, construct_critical_isoline)
-### Note: in this code I retaliate against the standard use of extracting fluid properties using FP since I think it is silly...
 
 
 
@@ -51,7 +50,6 @@ def thermoplot_cached(thermoplot_config_file_path: str, thermoplot_overwrite_set
     """
     cache_path = _thermoplot_cache_path(thermoplot_config_file_path, thermoplot_overwrite_settings)
     if cache_path.exists():
-        print("cache exists")
         with cache_path.open("rb") as cache_file:
             return pickle.load(cache_file)
     else: 
@@ -100,12 +98,6 @@ def thermoplot(thermoplot_config_file_path: str, thermoplot_overwrite_settings: 
     # apply or clear LaTeX-specific matplotlib settings after all overrides have been resolved.
     if config.thermoplot_settings["latex_formatting"]:
         configure_matplotlib()
-    # else:
-    #     plt.rcParams.update({
-    #         "text.usetex": False,
-    #         "font.family": "sans-serif",
-    #         "text.latex.preamble": "",
-    #     })
 
     # Create figure and axis objects
     fig, ax = plt.subplots(figsize=(10, 7))
