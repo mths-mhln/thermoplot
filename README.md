@@ -2,7 +2,7 @@
 
 Thermoplot is a Python package that automatically produces T-s and p-h diagram figure objects, populated with the thermodynamic information deemed relevant by the user: the saturation dome, the critical point and critical isoline, and isolines of vapour quality, pressure and enthalpy (T-s) or temperature and entropy (p-h). Since the output is a standard matplotlib figure object, it can be customised afterwards, allowing processes of interest to be overlaid on the generated background. The figure below shows a conceptual heat pump cycle of R1234ze(E), whose background T-s diagram was automatically generated and centred around the cycle using thermoplot.
 
-![Conceptual heat pump cycle of R1234ze(E) on a T-s diagram generated with Thermoplot](examples/heat_pump_cycle.png)
+![Conceptual heat pump cycle of R123zd(E) on a T-s diagram generated with Thermoplot](examples/heat_pump_cycle.png)
 
 ## Dependencies
 
