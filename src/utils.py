@@ -4,8 +4,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from coolprop_interface_thermoplot import CoolPropAbstractState
-from configthermoplot import ConfigThermoplot
+from coolprop_interface import CoolPropAbstractState
+from config import Config
 
 
 
@@ -37,16 +37,16 @@ def configure_matplotlib():
 
 
 
-def extract_critical_point(config: type[ConfigThermoplot], AS: type[CoolPropAbstractState]) -> np.ndarray:
+def extract_critical_point(config: type[Config], AS: type[CoolPropAbstractState]) -> np.ndarray:
     """
     Extract correct critical point coordinates. Depending on diagram type a different approach is necessary. The name of the diagram can be used to create a code that works in general.  
 
     Arguments
     ---------
-    config: ConfigThermoplot
-        Configuration object containing thermoplot settings, extracted from a .ini file. For more information please refer to configthermoplot.py
+    config: Config
+        Configuration object containing thermoplot settings, extracted from a .ini file. For more information please refer to config.py
     AS: CoolPropAbstractState
-        Abstract state object for property calculations. Created in coolprop_interface_thermoplot.py. See file for more information.
+        Abstract state object for property calculations. Created in coolprop_interface.py. See file for more information.
 
     Returns
     -------

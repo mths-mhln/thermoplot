@@ -8,9 +8,9 @@ import pickle
 import tempfile
 from pathlib import Path
 
-from configthermoplot import ConfigThermoplot
+from config import Config
 from utils import configure_matplotlib, extract_critical_point
-from coolprop_interface_thermoplot import CoolPropAbstractState
+from coolprop_interface import CoolPropAbstractState
 from labelling import draw_isolines_labeled
 from isolines import (isobar_lines_ts, isenthalp_lines_ts, isotherm_lines_ph, 
         isentrop_lines_ph, construct_quality_isolines,
@@ -71,7 +71,7 @@ def thermoplot(thermoplot_config_file_path: str, thermoplot_overwrite_settings: 
     Arguments
     ---------
     thermoplot_config_file_path: str
-        File path to the config file with user specifications for the thermoplot. See configthermoplot.py for details on how to specify the config file and which settings are necessary.
+        File path to the config file with user specifications for the thermoplot. See config.py for details on how to specify the config file and which settings are necessary.
     thermoplot_overwrite_settings: dict[str, list], optional
         A dictionary with keys corresponding to thermoplot settings (e.g. "show_isolines") and values corresponding to the value that the user wishes to overwrite this setting with. 
         This allows users to overwrite settings specified in the config file without having to adapt the config file itself. This is useful for example when users want to produce multiple 
@@ -84,7 +84,7 @@ def thermoplot(thermoplot_config_file_path: str, thermoplot_overwrite_settings: 
         The figure object containing the thermodynamic diagram.
     """
     # load configuration 
-    config = ConfigThermoplot(config_file=thermoplot_config_file_path)
+    config = Config(config_file=thermoplot_config_file_path)
     config.get_thermoplot_settings()
 
     # if thermoplot settings are provided, overwrite any setting that is specified to be overwritten through the thermoplot_settings dictionary.  

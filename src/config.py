@@ -7,7 +7,7 @@ import numpy as np
 
 
 
-class ConfigThermoplot:
+class Config:
     def __init__(self, config_file: str) -> None:
         # Parse config file (.ini file) using configparser. Perform first input checks and store diagram type to self.
         self.config_file = config_file
