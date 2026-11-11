@@ -22,21 +22,21 @@ uv sync
 uv run main.py
 ```
 
-`main.py` plots the T-s diagram of CO2 specified in `config/CO2.ini`, and `uv run examples/heat_pump_cycle.py` plots the figure above. To use Thermoplot in your own script, add the `src` folder to the Python path and pass a config file to `thermoplot_cached`, which returns a matplotlib figure:
+`main.py` plots the T-s diagram of CO2 specified in `config/CO2.ini`, and `uv run examples/heat_pump_cycle.py` plots the figure above. To use Thermoplot in your own script, add the `src` folder to the Python path and pass a config file to `thermoplot`, which returns a matplotlib figure:
 
 ```python
 import sys
 sys.path.append("path/to/thermoplot/src")
 
 import matplotlib.pyplot as plt
-from thermoplot import thermoplot_cached
+from thermoplot import thermoplot
 
-fig = thermoplot_cached(thermoplot_config_file_path="config/CO2.ini")
+fig = thermoplot(thermoplot_config_file_path="config/CO2.ini")
 ax = fig.get_axes()[0]  # plot processes of interest on this axis, in SI units
 plt.show()
 ```
 
-`thermoplot_cached` stores the figure in the folder `pyshockflow_thermoplot_cache` in the temporary directory of the operating system, and returns the stored figure when the same config file and settings are used again. Delete this folder after changing the code. `thermoplot` produces the same figure without caching. Settings can be overwritten without adapting the config file, e.g. `thermoplot_cached("config/CO2.ini", {"T_range": [250, 320]})`.
+Settings can be overwritten without adapting the config file, e.g. `thermoplot("config/CO2.ini", {"T_range": [250, 320]})`.
 
 ## Input overview
 

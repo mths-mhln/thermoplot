@@ -23,6 +23,9 @@ from isolines import (isobar_lines_ts, isenthalp_lines_ts, isotherm_lines_ph,
 # Create temporary dir for caching of thermoplot
 _THERMOPLOT_CACHE_DIR = Path(tempfile.gettempdir()) / "pyshockflow_thermoplot_cache"
 
+def _format_pressure_tick(x, _):
+    return f"${x/1000:.0f}$"
+
 def _thermoplot_cache_path(thermoplot_config_file_path: str, thermoplot_overwrite_settings: dict[str, object] | None) -> Path:
     """
     Creates a unique cache path for a given combination of thermoplot config file and thermoplot settings to overwrite. 
@@ -51,15 +54,18 @@ def thermoplot_cached(thermoplot_config_file_path: str, thermoplot_overwrite_set
     cache_path = _thermoplot_cache_path(thermoplot_config_file_path, thermoplot_overwrite_settings)
     if cache_path.exists():
         with cache_path.open("rb") as cache_file:
-            return pickle.load(cache_file)
-    else: 
-        print("cache does not exist")
+            try:
+                return pickle.load(cache_file)
+            except (EOFError, pickle.UnpicklingError):
+                pass
 
 
     fig = thermoplot(thermoplot_config_file_path, thermoplot_overwrite_settings)
     _THERMOPLOT_CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    with cache_path.open("wb") as cache_file:
+    with tempfile.NamedTemporaryFile(dir=_THERMOPLOT_CACHE_DIR, delete=False) as cache_file:
         pickle.dump(fig, cache_file, protocol=pickle.HIGHEST_PROTOCOL)
+        temporary_cache_path = Path(cache_file.name)
+    temporary_cache_path.replace(cache_path)
     return fig
 
 
@@ -185,7 +191,7 @@ def thermoplot(thermoplot_config_file_path: str, thermoplot_overwrite_settings: 
         ax.set_xlabel(r"$h\ [\mathrm{kJ/kg}]$")
         ax.set_ylabel(r"$p\ [\mathrm{Pa}]$")
         ax.xaxis.set_major_formatter(
-            ticker.FuncFormatter(lambda x, _: f"${x/1000:.0f}$"))
+            ticker.FuncFormatter(_format_pressure_tick))
     fig.tight_layout()
 
     return fig
